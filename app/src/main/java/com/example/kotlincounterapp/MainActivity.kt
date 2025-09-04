@@ -23,9 +23,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,7 +56,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Counter() {
-    val currentValue = remember { mutableIntStateOf(0) }
+    var currentValue by remember { mutableIntStateOf(0) }
     val context = LocalContext.current
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -62,25 +64,29 @@ fun Counter() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Current Counter: ${currentValue.intValue}"
+            text = "Current Counter: $currentValue"
         )
         Spacer(modifier = Modifier.height(20.dp))
         Row {
-            Button(onClick = {
-                currentValue.intValue++
-            }) {
+            Button(
+                onClick = {
+                    currentValue++
+                },
+            ) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
             }
             Spacer(modifier = Modifier.width(20.dp))
-            Button(onClick = {
-                if(currentValue.intValue>0){
-                    currentValue.intValue--
-                }
-                else{
-                    Toast.makeText(context, "Counter cannot be negative", Toast.LENGTH_SHORT).show()
-                }
+            Button(
+                onClick = {
+                    if (currentValue > 0) {
+                        currentValue--
+                    } else {
+                        Toast.makeText(context, "Counter cannot be negative", Toast.LENGTH_SHORT)
+                            .show()
+                    }
 
-            }) {
+                },
+            ) {
                 Icon(Icons.Default.Delete, contentDescription = "Delete")
             }
         }
